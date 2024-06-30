@@ -3,6 +3,40 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+import re
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+# Remove unnecessary words
+def preprocess_text(text, use_stemming=False, use_lemmatization=True):
+    stemmer = PorterStemmer()
+    lemmatizer = WordNetLemmatizer()
+    text = text.lower()
+    
+    # Remove special characters and digits
+    text = re.sub(r'\W', ' ', text)
+    text = re.sub(r'\d', ' ', text)
+    
+    # Remove stopwords
+    tokens = word_tokenize(text)
+
+    stop_words = set(stopwords.words('english'))
+    tokens = [word for word in tokens if word not in stop_words]
+    
+    if use_stemming:
+        tokens = [stemmer.stem(word) for word in tokens]
+    elif use_lemmatization:
+        tokens = [lemmatizer.lemmatize(word) for word in tokens]
+
+    processed_text = ' '.join(tokens)
+    
+    return processed_text
 
 def extract_abstract(url):
     options = uc.ChromeOptions()
@@ -33,6 +67,7 @@ def extract_abstract(url):
             else:
                 return "NOT FOUND"
 
+        abstract_text = preprocess_text(abstract_text)
         return abstract_text
 
     finally:
