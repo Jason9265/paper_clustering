@@ -11,6 +11,7 @@ def process_papers(excel_path):
         res = extract_abstract(doi)
         df.at[index, 'Abstract'] = res
 
+    # Store abstracts into a new file
     df.to_excel('updated_excel_file.xlsx', index=False)
 
 if __name__ == "__main__":
