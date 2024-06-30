@@ -1,3 +1,4 @@
+from extract_abstract import extract_abstract
 import pandas as pd
 
 def process_papers(excel_path):
@@ -6,7 +7,11 @@ def process_papers(excel_path):
     for index, row in df.iterrows():
         name = row['Name']
         doi = row['DOI']
-        print(doi)
+
+        res = extract_abstract(doi)
+        df.at[index, 'Abstract'] = res
+
+    df.to_excel('updated_excel_file.xlsx', index=False)
 
 if __name__ == "__main__":
     excel_path = 'Green Energy Papers Database.xlsx'
