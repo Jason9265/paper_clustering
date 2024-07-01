@@ -1,4 +1,5 @@
 from extract_abstract import extract_abstract
+from vectorise_clustering import vectorise_clustering
 import pandas as pd
 
 def process_papers(excel_path):
@@ -21,6 +22,7 @@ if __name__ == "__main__":
     process_papers(excel_path) 
 
     # Vectorisation Clustering:
+    vectorise_clustering('updated_excel_file.xlsx', 8, False)
 
     # Visualisation:
 
