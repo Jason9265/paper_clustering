@@ -35,3 +35,7 @@ python cluster.py
 **Example of clustering_summary.csv**:
 
 ![clustering_summary.csv](screenshot_clustering_summary.png)
+
+**Example of t-SNE visualisation**:
+
+![t-SNE](screenshot_visualisation.png)

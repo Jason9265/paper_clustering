@@ -3,6 +3,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.manifold import TSNE
 
 def vectorise_clustering(excel_file, optimal_clusters, if_display):
     df = pd.read_excel(excel_file)
@@ -42,10 +44,32 @@ def vectorise_clustering(excel_file, optimal_clusters, if_display):
     kmeans.fit(X)
 
     df['cluster'] = kmeans.labels_
+    # df['KeyTerms'] = df['cluster'].apply(lambda x: ', '.join(vectorizer.get_feature_names_out()[kmeans.cluster_centers_[x].argsort()[-5:][::-1]]))
+    df.reset_index(inplace=True)
 
     # Print Silhouette Score
     silhouette_avg = silhouette_score(X, kmeans.labels_)
     print(f'Silhouette Score: {silhouette_avg}')
+
+
+    # t-SNE Visualisation:
+    tsne = TSNE(n_components=2, random_state=30, perplexity=20, init='random')
+    tsne_results = tsne.fit_transform(X.toarray())
+
+    df['TSNE1'] = tsne_results[:, 0]
+    df['TSNE2'] = tsne_results[:, 1]
+
+    plt.figure(figsize=(12, 8))
+    sns.scatterplot(x='TSNE1', y='TSNE2', hue='cluster', data=df, palette='tab10')
+    
+    for i in range(df.shape[0]):
+        plt.text(df.TSNE1[i], df.TSNE2[i], str(df.index[i]), fontsize=7)
+
+    plt.title('t-SNE Clustering Papers')
+    plt.xlabel('t-SNE 1')
+    plt.ylabel('t-SNE 2')
+    plt.legend(title='Cluster')
+    plt.show()
 
 
     # Output 

@@ -7,6 +7,6 @@ def test_extra():
     print(abstract) 
 
 def test_clustering():
-    vectorise_clustering('updated_excel_file.xlsx', 12, False)
+    vectorise_clustering('updated_excel_file.xlsx', 8, False)
 
 test_clustering()

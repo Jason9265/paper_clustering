@@ -24,6 +24,5 @@ if __name__ == "__main__":
     # Vectorisation Clustering:
     vectorise_clustering('updated_excel_file.xlsx', 8, False)
 
-    # Visualisation:
-
     # Output Generation:
+    print("Output is clustering_results.csv and clustering_summary.csv")
